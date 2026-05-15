@@ -35,7 +35,7 @@ Qwen/Qwen2.5-Coder-3B-Instruct
 
 Use 4-bit QLoRA on Colab T4. Keep context length at 1024 or 2048 for the first run.
 
-On T4, force FP16 and disable BF16. The notebook sets `torch_dtype=torch.float16`, `fp16=True`, and `bf16=False`. If Colab shows `NotImplementedError ... BFloat16`, restart/delete the runtime and rerun with the latest notebook.
+On T4, load the model with `torch_dtype=torch.float16`, but disable Trainer mixed precision with `fp16=False` and `bf16=False`. This avoids the AMP grad-scaler path that can fail with `NotImplementedError ... BFloat16`. If PEFT warns that an adapter was applied twice, delete the runtime and rerun from a clean session.
 
 ## TRL Version Note
 
