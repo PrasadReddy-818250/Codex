@@ -8,6 +8,8 @@ def test_runtime_status_reports_stopped_on_unused_port(tmp_path) -> None:
         port=8000,
         model_endpoint="http://127.0.0.1:65534/v1/chat/completions",
         model_name="test",
+        model_timeout_seconds=300,
+        model_max_tokens=256,
         rag_path=tmp_path / "missing.jsonl",
         mock_model=True,
         max_retrieved_chunks=4,

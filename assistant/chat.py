@@ -22,7 +22,12 @@ class ChatService:
         if config.mock_model:
             self.model_client = MockModelClient()
         else:
-            self.model_client = LocalModelClient(config.model_endpoint, config.model_name)
+            self.model_client = LocalModelClient(
+                config.model_endpoint,
+                config.model_name,
+                timeout_seconds=config.model_timeout_seconds,
+                max_tokens=config.model_max_tokens,
+            )
 
     async def answer(self, message: str, history: list[dict[str, str]] | None = None) -> ChatResponse:
         safety = assess_user_message(message)

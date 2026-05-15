@@ -8,10 +8,18 @@ class ModelClientError(RuntimeError):
 
 
 class LocalModelClient:
-    def __init__(self, endpoint: str, model_name: str, *, timeout_seconds: float = 120.0) -> None:
+    def __init__(
+        self,
+        endpoint: str,
+        model_name: str,
+        *,
+        timeout_seconds: float = 300.0,
+        max_tokens: int = 512,
+    ) -> None:
         self.endpoint = endpoint
         self.model_name = model_name
         self.timeout_seconds = timeout_seconds
+        self.max_tokens = max_tokens
 
     async def chat(self, messages: list[dict[str, str]]) -> str:
         payload = {
@@ -19,7 +27,7 @@ class LocalModelClient:
             "messages": messages,
             "temperature": 0.2,
             "top_p": 0.9,
-            "max_tokens": 1024,
+            "max_tokens": self.max_tokens,
             "stream": False,
         }
         try:

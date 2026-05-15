@@ -13,10 +13,35 @@ Local artifact metadata:
 
 Evaluate before accepting it:
 
-1. Load base model plus adapter in Colab or a GPU-capable Python environment.
-2. Run prompts from `evals/golden_prompts.jsonl`.
-3. Compare output against the current local base model behavior.
-4. Accept only if the adapter improves target SQL/Python behavior without increasing unsafe or fabricated answers.
+1. Run the local base-model app eval:
+
+```powershell
+.\.venv\Scripts\python.exe -m evals.run_app_eval
+```
+
+2. Load base model plus adapter in Colab or a GPU-capable Python environment.
+3. Run prompts from `evals/golden_prompts.jsonl`.
+4. Compare output against `data/generated/app_eval_results.json`.
+5. Accept only if the adapter improves target SQL/Python behavior without increasing unsafe or fabricated answers.
+
+Colab helper notebook:
+
+```text
+notebooks/colab_adapter_eval.ipynb
+```
+
+Upload both:
+
+```text
+E:\projects\artifacts\adapters\qwen25-coder-3b-sql-python-lora.zip
+E:\projects\evals\golden_prompts.jsonl
+```
+
+Current base-model baseline:
+
+```text
+3/3 passed through the local app after setting max output to 256 tokens.
+```
 
 Minimum prompts:
 
