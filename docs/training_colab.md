@@ -4,23 +4,29 @@ The local app can already run a base Qwen coder GGUF model. Custom training mean
 
 Workflow:
 
-1. Curate records in `training/seed_records.jsonl` or a larger private JSONL file.
+1. Curate records in `training/seed_records.jsonl`, `training/batch1_records.jsonl`, or a larger private JSONL file.
 2. Validate records:
 
 ```powershell
-.\.venv\Scripts\python.exe -m training.validate_dataset training\seed_records.jsonl
+.\.venv\Scripts\python.exe -m training.validate_dataset training\seed_records.jsonl training\batch1_records.jsonl
 ```
 
 3. Build chat-format SFT data:
 
 ```powershell
-.\.venv\Scripts\python.exe -m training.build_sft_dataset training\seed_records.jsonl data\generated\sft_train.jsonl
+.\.venv\Scripts\python.exe -m training.build_sft_dataset training\seed_records.jsonl training\batch1_records.jsonl data\generated\sft_train.jsonl
 ```
 
-4. Upload the SFT JSONL to Colab.
+Or prepare Batch 1 artifacts in one command:
+
+```powershell
+.\scripts\prepare_batch1_training.ps1
+```
+
+4. Upload the SFT JSONL and combined eval JSONL to Colab.
 5. Run `notebooks/colab_qwen_lora_training.ipynb`.
 6. Save adapter artifacts and manifest.
-7. Evaluate the adapter against `evals/golden_prompts.jsonl`.
+7. Evaluate the adapter against the combined eval file from `data\generated\golden_prompts_batch1_combined.jsonl`.
 8. Merge and convert to GGUF only if evals improve over the base model.
 
 Do not train on private data, credentials, proprietary vendor manuals, or customer code unless explicitly approved.

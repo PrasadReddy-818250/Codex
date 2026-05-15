@@ -36,6 +36,18 @@ def load_cases(path: Path) -> list[EvalCase]:
     return cases
 
 
+def load_cases_many(paths: list[Path]) -> list[EvalCase]:
+    cases: list[EvalCase] = []
+    seen: set[str] = set()
+    for path in paths:
+        for case in load_cases(path):
+            if case.id in seen:
+                raise ValueError(f"duplicate eval id: {case.id}")
+            seen.add(case.id)
+            cases.append(case)
+    return cases
+
+
 def check_case(case: EvalCase, answer: str) -> dict[str, Any]:
     normalized = answer.lower()
     missing = [item for item in case.required if item.lower() not in normalized]
@@ -85,13 +97,13 @@ def run_eval(endpoint: str, cases: list[EvalCase], timeout: float) -> list[dict[
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run local app evals.")
-    parser.add_argument("--cases", default="evals/golden_prompts.jsonl")
+    parser.add_argument("--cases", nargs="+", default=["evals/golden_prompts.jsonl"])
     parser.add_argument("--endpoint", default="http://127.0.0.1:8000/api/chat")
     parser.add_argument("--output", default="data/generated/app_eval_results.json")
     parser.add_argument("--timeout", type=float, default=240.0)
     args = parser.parse_args()
 
-    cases = load_cases(Path(args.cases))
+    cases = load_cases_many([Path(path) for path in args.cases])
     results = run_eval(args.endpoint, cases, args.timeout)
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
