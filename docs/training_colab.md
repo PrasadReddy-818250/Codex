@@ -35,6 +35,8 @@ Qwen/Qwen2.5-Coder-3B-Instruct
 
 Use 4-bit QLoRA on Colab T4. Keep context length at 1024 or 2048 for the first run.
 
+On T4, force FP16 and disable BF16. The notebook sets `torch_dtype=torch.float16`, `fp16=True`, and `bf16=False`. If Colab shows `NotImplementedError ... BFloat16`, restart/delete the runtime and rerun with the latest notebook.
+
 ## TRL Version Note
 
 Recent TRL versions use `SFTConfig(max_length=...)`; older versions used `max_seq_length`. The notebook detects the installed `SFTConfig` and `SFTTrainer` signatures and maps arguments accordingly. If Colab errors on a TRL argument, restart the runtime and rerun the notebook after pulling the latest repo version.
