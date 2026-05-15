@@ -33,8 +33,8 @@ notebooks/colab_adapter_eval.ipynb
 The notebook reads these Google Drive paths directly:
 
 ```text
-My Drive/colab Notebooks/codex-artifacts/adapters/qwen25-coder-3b-sql-python-lora.zip
-My Drive/colab Notebooks/codex-artifacts/evals/golden_prompts.jsonl
+My Drive/Colab Notebooks/codex-artifacts/adapters/qwen25-coder-3b-sql-python-lora.zip
+My Drive/Colab Notebooks/codex-artifacts/adapters/evals/golden_prompts.jsonl
 ```
 
 If Colab fails with `module 'sympy' has no attribute 'core'`, delete the runtime and rerun the notebook from the top. The notebook force-reinstalls a stable `sympy` before importing Torch/Transformers.
