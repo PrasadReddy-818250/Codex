@@ -42,7 +42,12 @@ class ChatService:
             {"role": "system", "content": SYSTEM_POLICY + confirmation_note},
             {
                 "role": "system",
-                "content": "Retrieved context follows. Use it when relevant and cite source URLs.\n\n" + context,
+                "content": (
+                    "Retrieved context follows. Use it when relevant and cite source URLs. "
+                    "For code-generation tasks, follow any retrieved API usage constraints exactly. "
+                    "Do not invent imports, functions, or success claims beyond the retrieved context.\n\n"
+                    + context
+                ),
             },
         ]
         for item in history or []:

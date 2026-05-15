@@ -12,6 +12,7 @@ __pycache__/
 
 artifacts/models/
 artifacts/adapters/
+artifacts/tools/
 artifacts/**/*.bin
 artifacts/**/*.safetensors
 artifacts/**/*.gguf

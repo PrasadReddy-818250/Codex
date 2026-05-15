@@ -30,10 +30,11 @@ $env:ASSISTANT_MOCK_MODEL="true"
 .\scripts\run_web.ps1
 ```
 
-For a real local model:
+For the tested real local 3B model:
 
 ```powershell
-.\scripts\start_llama_server.example.ps1
+.\scripts\download_qwen3b_runtime.ps1
+.\scripts\start_qwen3b_llama_server.ps1
 .\scripts\run_web_real.ps1
 ```
 
@@ -47,7 +48,7 @@ For a Colab GPU endpoint:
 
 Recommended local runtime: `llama.cpp` `llama-server`.
 
-Recommended first model class: 3B to 4B GGUF Q4 with context capped at 2048 to 4096 tokens.
+Current tested model: `Qwen2.5-Coder-3B-Instruct-GGUF` `Q4_K_M`, served by `llama-server` on CPU with a 2048-token context.
 
 Model files and adapters must stay outside git-tracked content. Use `artifacts/models/` and `artifacts/adapters/` locally.
 
