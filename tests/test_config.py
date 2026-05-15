@@ -17,3 +17,5 @@ def test_config_defaults(monkeypatch) -> None:
     assert config.host == "127.0.0.1"
     assert config.port == 8000
     assert not config.mock_model
+    assert config.llama_port == 8080
+    assert config.llama_context_size == 2048

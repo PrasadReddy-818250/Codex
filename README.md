@@ -21,6 +21,8 @@ This project is intentionally RAG-first. Fine-tuning is a later measured improve
 
 Open `http://127.0.0.1:8000`.
 
+The web UI includes Start Model / Stop Model controls for the configured local `llama-server` path.
+
 By default, the app expects a local OpenAI-compatible model endpoint at `http://127.0.0.1:8080/v1/chat/completions`.
 
 For UI and wiring tests without a model, set:

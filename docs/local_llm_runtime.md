@@ -56,6 +56,8 @@ The model endpoint is:
 http://127.0.0.1:8080/v1/chat/completions
 ```
 
+The browser UI also has Start Model and Stop Model buttons. They manage the configured local `llama-server.exe` and model path only.
+
 ## Lower-RAM 1.5B Fallback
 
 If the 3B model is too slow or memory pressure is too high, use:

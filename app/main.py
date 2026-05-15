@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from assistant.chat import ChatService
 from assistant.config import AppConfig
 from assistant.model_client import ModelClientError
+from assistant.runtime_manager import RuntimeManager
 
 
 class ChatMessage(BaseModel):
@@ -35,6 +36,7 @@ class ChatResponse(BaseModel):
 
 config = AppConfig.from_env()
 chat_service = ChatService(config)
+runtime_manager = RuntimeManager(config)
 app = FastAPI(title="Local Frank SQL/Python GPT", version="0.1.0")
 
 
@@ -58,6 +60,9 @@ async def index() -> str:
     header { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 18px; }
     h1 { font-size: 22px; margin: 0; }
     .status { font-size: 13px; color: #515a66; }
+    .runtime { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; color: #3e4652; font-size: 13px; }
+    .runtime button { min-height: 34px; padding: 0 12px; background: #2f6f4e; }
+    .runtime button.stop { background: #9a3412; }
     #chat { background: #fff; border: 1px solid #d8dde5; border-radius: 8px; min-height: 58vh; padding: 16px; overflow-y: auto; }
     .msg { padding: 12px 14px; border-radius: 8px; margin: 0 0 12px; white-space: pre-wrap; line-height: 1.45; }
     .user { background: #e8f0fe; margin-left: 10%; }
@@ -75,6 +80,11 @@ async def index() -> str:
     <h1>Local Frank SQL/Python GPT</h1>
     <div class="status">""" + model_status + """</div>
   </header>
+  <section class="runtime">
+    <span id="runtime-status">Model server: checking...</span>
+    <button id="start-model" type="button">Start Model</button>
+    <button id="stop-model" class="stop" type="button">Stop Model</button>
+  </section>
   <section id="chat" aria-live="polite"></section>
   <form id="form">
     <textarea id="message" placeholder="Ask SQL, Db2, AS400, Python, pandas, PySpark, Airflow, or connector questions."></textarea>
@@ -86,6 +96,9 @@ const chat = document.getElementById("chat");
 const form = document.getElementById("form");
 const input = document.getElementById("message");
 const send = document.getElementById("send");
+const runtimeStatus = document.getElementById("runtime-status");
+const startModel = document.getElementById("start-model");
+const stopModel = document.getElementById("stop-model");
 const history = [];
 
 function addMessage(role, content, meta) {
@@ -101,6 +114,38 @@ function addMessage(role, content, meta) {
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
+
+async function refreshRuntime() {
+  try {
+    const response = await fetch("/api/runtime/status");
+    const data = await response.json();
+    runtimeStatus.textContent = `Model server: ${data.message} (${data.host}:${data.port}${data.pid ? ", PID " + data.pid : ""})`;
+  } catch (error) {
+    runtimeStatus.textContent = `Model server: status error: ${error.message}`;
+  }
+}
+
+async function runtimeAction(path) {
+  startModel.disabled = true;
+  stopModel.disabled = true;
+  try {
+    const response = await fetch(path, { method: "POST" });
+    const data = await response.json();
+    runtimeStatus.textContent = `Model server: ${data.message}`;
+    setTimeout(refreshRuntime, 2500);
+  } catch (error) {
+    runtimeStatus.textContent = `Model server: action error: ${error.message}`;
+  } finally {
+    setTimeout(() => {
+      startModel.disabled = false;
+      stopModel.disabled = false;
+    }, 1200);
+  }
+}
+
+startModel.addEventListener("click", () => runtimeAction("/api/runtime/start"));
+stopModel.addEventListener("click", () => runtimeAction("/api/runtime/stop"));
+refreshRuntime();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -140,6 +185,21 @@ async def health() -> dict[str, object]:
         "mock_model": config.mock_model,
         "rag_path": str(config.rag_path),
     }
+
+
+@app.get("/api/runtime/status")
+async def runtime_status() -> dict[str, object]:
+    return runtime_manager.status().__dict__
+
+
+@app.post("/api/runtime/start")
+async def runtime_start() -> dict[str, object]:
+    return runtime_manager.start().__dict__
+
+
+@app.post("/api/runtime/stop")
+async def runtime_stop() -> dict[str, object]:
+    return runtime_manager.stop().__dict__
 
 
 @app.post("/api/chat", response_model=ChatResponse)

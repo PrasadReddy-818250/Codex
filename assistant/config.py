@@ -21,6 +21,12 @@ class AppConfig:
     rag_path: Path
     mock_model: bool
     max_retrieved_chunks: int
+    llama_server_path: Path
+    llama_model_path: Path
+    llama_host: str
+    llama_port: int
+    llama_context_size: int
+    llama_threads: int
 
     @classmethod
     def from_env(cls) -> "AppConfig":
@@ -35,4 +41,20 @@ class AppConfig:
             rag_path=Path(os.getenv("ASSISTANT_RAG_PATH", "data/samples/knowledge.jsonl")),
             mock_model=_bool_env("ASSISTANT_MOCK_MODEL", False),
             max_retrieved_chunks=int(os.getenv("ASSISTANT_MAX_RETRIEVED_CHUNKS", "4")),
+            llama_server_path=Path(
+                os.getenv(
+                    "ASSISTANT_LLAMA_SERVER_PATH",
+                    r"E:\projects\artifacts\tools\llama.cpp\b9159-win-cpu-x64\llama-server.exe",
+                )
+            ),
+            llama_model_path=Path(
+                os.getenv(
+                    "ASSISTANT_LLAMA_MODEL_PATH",
+                    r"E:\projects\artifacts\models\qwen2.5-coder-3b-instruct-q4_k_m\model.gguf",
+                )
+            ),
+            llama_host=os.getenv("ASSISTANT_LLAMA_HOST", "127.0.0.1"),
+            llama_port=int(os.getenv("ASSISTANT_LLAMA_PORT", "8080")),
+            llama_context_size=int(os.getenv("ASSISTANT_LLAMA_CONTEXT_SIZE", "2048")),
+            llama_threads=int(os.getenv("ASSISTANT_LLAMA_THREADS", "4")),
         )
