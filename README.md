@@ -53,3 +53,17 @@ Current tested model: `Qwen2.5-Coder-3B-Instruct-GGUF` `Q4_K_M`, served by `llam
 Model files and adapters must stay outside git-tracked content. Use `artifacts/models/` and `artifacts/adapters/` locally.
 
 See [docs/local_llm_runtime.md](docs/local_llm_runtime.md) and [docs/colab_gpu_runtime.md](docs/colab_gpu_runtime.md).
+
+## Custom Training
+
+The custom-trained path is LoRA/QLoRA on top of `Qwen/Qwen2.5-Coder-3B-Instruct`, then adapter export from Colab.
+
+Prepare local SFT data:
+
+```powershell
+.\scripts\prepare_custom_training_data.ps1
+```
+
+Upload `data\generated\sft_train.jsonl` into [notebooks/colab_qwen_lora_training.ipynb](notebooks/colab_qwen_lora_training.ipynb).
+
+The repo includes only seed data and training code. Generated SFT data, adapters, and model weights are ignored.

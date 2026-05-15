@@ -2,4 +2,10 @@
 
 Place Colab notebooks here.
 
-The first planned notebook is `colab_train_lora.ipynb`, which should validate JSONL data, run QLoRA, export adapters, and write a manifest. Generated notebook outputs and model artifacts should not be committed.
+Use `colab_qwen_lora_training.ipynb` for the first custom-training run. It expects chat-format JSONL produced by:
+
+```powershell
+.\.venv\Scripts\python.exe -m training.build_sft_dataset training\seed_records.jsonl data\generated\sft_train.jsonl
+```
+
+Generated notebook outputs and model artifacts should not be committed.

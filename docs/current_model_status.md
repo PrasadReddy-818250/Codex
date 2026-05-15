@@ -20,3 +20,4 @@ Observed smoke results:
 Known limitation:
 
 - This is still a small local model. It can make code mistakes and must be evaluated before being trusted for production SQL/Python work.
+- Custom training is prepared through `training/seed_records.jsonl`, `training/build_sft_dataset.py`, and `notebooks/colab_qwen_lora_training.ipynb`, but no trained adapter has been produced yet.
