@@ -37,6 +37,8 @@ E:\projects\artifacts\adapters\qwen25-coder-3b-sql-python-lora.zip
 E:\projects\evals\golden_prompts.jsonl
 ```
 
+If Colab fails with `module 'sympy' has no attribute 'core'`, delete the runtime and rerun the notebook from the top. The notebook force-reinstalls a stable `sympy` before importing Torch/Transformers.
+
 Current base-model baseline:
 
 ```text

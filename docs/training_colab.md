@@ -37,6 +37,8 @@ Use 4-bit QLoRA on Colab T4. Keep context length at 1024 or 2048 for the first r
 
 On T4, load the model with `torch_dtype=torch.float16`, but disable Trainer mixed precision with `fp16=False` and `bf16=False`. This avoids the AMP grad-scaler path that can fail with `NotImplementedError ... BFloat16`. If PEFT warns that an adapter was applied twice, delete the runtime and rerun from a clean session.
 
+If Colab fails with `module 'sympy' has no attribute 'core'`, delete the runtime and rerun from the top. The notebook force-reinstalls a stable `sympy` before importing Torch/Transformers.
+
 ## TRL Version Note
 
 Recent TRL versions use `SFTConfig(max_length=...)`; older versions used `max_seq_length`. The notebook detects the installed `SFTConfig` and `SFTTrainer` signatures and maps arguments accordingly. If Colab errors on a TRL argument, restart the runtime and rerun the notebook after pulling the latest repo version.
