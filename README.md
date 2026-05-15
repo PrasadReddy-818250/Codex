@@ -21,11 +21,26 @@ This project is intentionally RAG-first. Fine-tuning is a later measured improve
 
 Open `http://127.0.0.1:8000`.
 
-By default, the app expects a local OpenAI-compatible model endpoint at `http://127.0.0.1:8080/v1/chat/completions`. For UI and wiring tests without a model, set:
+By default, the app expects a local OpenAI-compatible model endpoint at `http://127.0.0.1:8080/v1/chat/completions`.
+
+For UI and wiring tests without a model, set:
 
 ```powershell
 $env:ASSISTANT_MOCK_MODEL="true"
 .\scripts\run_web.ps1
+```
+
+For a real local model:
+
+```powershell
+.\scripts\start_llama_server.example.ps1
+.\scripts\run_web_real.ps1
+```
+
+For a Colab GPU endpoint:
+
+```powershell
+.\scripts\run_web_colab_endpoint.ps1 -Endpoint "https://<your-colab-tunnel>/v1/chat/completions" -ModelName "Qwen/Qwen2.5-Coder-3B-Instruct"
 ```
 
 ## Model Runtime
@@ -35,3 +50,5 @@ Recommended local runtime: `llama.cpp` `llama-server`.
 Recommended first model class: 3B to 4B GGUF Q4 with context capped at 2048 to 4096 tokens.
 
 Model files and adapters must stay outside git-tracked content. Use `artifacts/models/` and `artifacts/adapters/` locally.
+
+See [docs/local_llm_runtime.md](docs/local_llm_runtime.md) and [docs/colab_gpu_runtime.md](docs/colab_gpu_runtime.md).

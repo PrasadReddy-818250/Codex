@@ -40,6 +40,11 @@ app = FastAPI(title="Local Frank SQL/Python GPT", version="0.1.0")
 
 @app.get("/", response_class=HTMLResponse)
 async def index() -> str:
+    model_status = (
+        "Mock mode: app wiring only, no real model."
+        if config.mock_model
+        else f"Real model endpoint: {config.model_endpoint}"
+    )
     return """<!doctype html>
 <html lang="en">
 <head>
@@ -68,7 +73,7 @@ async def index() -> str:
 <main>
   <header>
     <h1>Local Frank SQL/Python GPT</h1>
-    <div class="status">Local web UI. Model endpoint must run separately.</div>
+    <div class="status">""" + model_status + """</div>
   </header>
   <section id="chat" aria-live="polite"></section>
   <form id="form">
