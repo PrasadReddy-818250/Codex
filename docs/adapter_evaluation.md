@@ -39,11 +39,25 @@ My Drive/Colab Notebooks/codex-artifacts/adapters/evals/golden_prompts.jsonl
 
 If Colab fails with `module 'sympy' has no attribute 'core'`, delete the runtime and rerun the notebook from the top. The notebook force-reinstalls a stable `sympy` before importing Torch/Transformers.
 
-Current base-model baseline:
+Current strict base-model baseline:
 
 ```text
-3/3 passed through the local app after setting max output to 256 tokens.
+2/3 passed through the local app.
+postgres-upsert currently fails because the CPU response truncates before on_conflict_do_update.
+requests-timeout and db2i-uncertain pass.
 ```
+
+First adapter evaluation from Colab:
+
+```text
+postgres-upsert: FAIL
+requests-timeout: PASS under the old weak check, but answer omitted timeout=
+db2i-uncertain: FAIL; answer incorrectly called Db2 for i "mainframe"
+overall: 1/3
+decision: reject this adapter for merge/export
+```
+
+The first adapter proves the training pipeline works, but the dataset is too small and the adapter degraded important behavior. Do not merge it into a local GGUF.
 
 Minimum prompts:
 
