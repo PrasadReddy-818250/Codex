@@ -51,10 +51,16 @@ First adapter evaluation from Colab:
 
 ```text
 postgres-upsert: FAIL
-requests-timeout: PASS under the old weak check, but answer omitted timeout=
-db2i-uncertain: FAIL; answer incorrectly called Db2 for i "mainframe"
+requests-timeout: PASS under the old weak check, but answer omitted timeout= in requests.get(...)
+db2i-uncertain: FAIL; answer incorrectly called Db2 for i "mainframe" and missed the required "distinct" wording
 overall: 1/3
 decision: reject this adapter for merge/export
+```
+
+Downloaded result stored locally, ignored by git:
+
+```text
+E:\projects\data\generated\adapter_eval_results.json
 ```
 
 The first adapter proves the training pipeline works, but the dataset is too small and the adapter degraded important behavior. Do not merge it into a local GGUF.
