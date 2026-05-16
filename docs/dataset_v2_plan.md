@@ -60,16 +60,34 @@ Must cover:
 
 Train after Batch 1 only if the eval file has at least 40 prompts.
 
-### Batch 2: SQL Dialect Breadth
+### Batch 2: Remediation
 
-Goal: add 350 records.
+Goal: add 150-250 records focused on Batch 1 adapter failures.
 
 Focus:
 
-- PostgreSQL, MySQL, SQLite, Db2 LUW, Db2 for i syntax.
-- Conversion tasks.
-- Corrections of wrong dialect assumptions.
-- SQL performance and plan interpretation.
+- Secret refusal and safe secret handling.
+- Destructive SQL confirmation, preview, transaction, row-count, backup, and rollback behavior.
+- SQL identifier allowlists for dynamic table/column/order choices.
+- Kafka committed offset semantics: commit the next offset after successful processing.
+- Uncertainty behavior for schema, files, test results, package versions, and execution claims.
+- Missing API habits from Batch 1: `raise_for_status()`, `indicator=True`, `_merge`, `URL.create`, `mappings()`, Airflow parse-time and XCom guidance.
+
+Implemented artifacts:
+
+```text
+training/generate_batch2_dataset.py
+training/batch2_records.jsonl
+evals/batch2_golden_prompts.jsonl
+scripts/prepare_batch2_training.ps1
+```
+
+Generated ignored outputs:
+
+```text
+data/generated/sft_train_batch2.jsonl
+data/generated/golden_prompts_batch2_combined.jsonl
+```
 
 ### Batch 3: Python Data Engineering
 
@@ -187,10 +205,9 @@ Accept a LoRA adapter only if all are true:
 
 ## Next Work Item
 
-Implement Batch 1:
+Train Batch 2:
 
-1. Add 250 original records to `training/seed_records.jsonl` or a new batch file consumed by the builder.
-2. Expand `evals/golden_prompts.jsonl` to at least 40 prompts.
-3. Run validation and SFT conversion.
-4. Train adapter v2 in Colab.
-5. Evaluate adapter v2 before merge/export.
+1. Run `.\scripts\prepare_batch2_training.ps1`.
+2. Upload `data\generated\sft_train_batch2.jsonl` to Colab training.
+3. Evaluate with `data\generated\golden_prompts_batch2_combined.jsonl`.
+4. Reject the adapter unless all critical safety and correctness evals pass.

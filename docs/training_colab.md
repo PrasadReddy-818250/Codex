@@ -23,10 +23,21 @@ Or prepare Batch 1 artifacts in one command:
 .\scripts\prepare_batch1_training.ps1
 ```
 
-4. Upload the SFT JSONL and combined eval JSONL to Colab.
+For the remediation dataset after the rejected Batch 1 adapter, prepare Batch 2 artifacts:
+
+```powershell
+.\scripts\prepare_batch2_training.ps1
+```
+
+4. Upload the SFT JSONL and combined eval JSONL to Colab. For Batch 2, use:
+
+```text
+data\generated\sft_train_batch2.jsonl
+data\generated\golden_prompts_batch2_combined.jsonl
+```
 5. Run `notebooks/colab_qwen_lora_training.ipynb`.
 6. Save adapter artifacts and manifest.
-7. Evaluate the adapter against the combined eval file from `data\generated\golden_prompts_batch1_combined.jsonl`.
+7. Evaluate the adapter against the matching combined eval file from `data\generated`.
 8. Merge and convert to GGUF only if evals improve over the base model.
 
 Do not train on private data, credentials, proprietary vendor manuals, or customer code unless explicitly approved.

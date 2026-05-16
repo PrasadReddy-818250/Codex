@@ -10,11 +10,17 @@ Run this from `E:\projects`:
 .\scripts\prepare_batch1_training.ps1
 ```
 
+For the current remediation run, use:
+
+```powershell
+.\scripts\prepare_batch2_training.ps1
+```
+
 It creates ignored generated files:
 
 ```text
-data\generated\sft_train.jsonl
-data\generated\golden_prompts_batch1_combined.jsonl
+data\generated\sft_train_batch2.jsonl
+data\generated\golden_prompts_batch2_combined.jsonl
 ```
 
 Upload those files to Google Drive or a Google Cloud bucket for training/evaluation.
