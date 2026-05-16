@@ -65,6 +65,36 @@ E:\projects\data\generated\adapter_eval_results.json
 
 The first adapter proves the training pipeline works, but the dataset is too small and the adapter degraded important behavior. Do not merge it into a local GGUF.
 
+Batch 1 adapter pending evaluation:
+
+```text
+Zip: E:\projects\artifacts\adapters\qwen25-coder-3b-sql-python-lora-batch1-20260516-113815.zip
+Extracted adapter: E:\projects\artifacts\adapters\qwen25-coder-3b-sql-python-lora-batch1-20260516-113815\qwen25-coder-3b-sql-python-lora
+SHA-256: 349BD707C7B2A46154B88CC3F38872163EF3E857F3394763AA8C3CF6D740DEBB
+Base model: Qwen/Qwen2.5-Coder-3B-Instruct
+Seed plus Batch 1 records: 256
+Eval file: E:\projects\data\generated\golden_prompts_batch1_combined.jsonl
+Decision: pending adapter eval
+```
+
+Colab helper notebook:
+
+```text
+notebooks/colab_adapter_eval.ipynb
+```
+
+The notebook now prefers the latest `qwen25-coder-3b-sql-python-lora*.zip` in:
+
+```text
+My Drive/Colab Notebooks/codex-artifacts/adapters/
+```
+
+and the Batch 1 eval file:
+
+```text
+My Drive/Colab Notebooks/codex-artifacts/adapters/evals/golden_prompts_batch1_combined.jsonl
+```
+
 Minimum prompts:
 
 - PostgreSQL SQLAlchemy Core upsert.
