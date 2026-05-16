@@ -8,8 +8,10 @@ Set-Location $repoRoot
 .\.venv\Scripts\python.exe -m training.build_sft_dataset training\seed_records.jsonl training\batch1_records.jsonl data\generated\sft_train.jsonl
 
 $combinedEval = "data\generated\golden_prompts_batch1_combined.jsonl"
-Get-Content -LiteralPath "evals\golden_prompts.jsonl", "evals\batch1_golden_prompts.jsonl" |
-    Set-Content -LiteralPath $combinedEval -Encoding utf8
+$combinedEvalPath = Join-Path $repoRoot $combinedEval
+$combinedEvalLines = Get-Content -LiteralPath "evals\golden_prompts.jsonl", "evals\batch1_golden_prompts.jsonl"
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllLines($combinedEvalPath, $combinedEvalLines, $utf8NoBom)
 
 Write-Host "Prepared training file: data\generated\sft_train.jsonl"
 Write-Host "Prepared eval file: $combinedEval"
